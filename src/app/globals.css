@@ -3,31 +3,28 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Design tokens — adapted from the `hubtown` Volta capture.
-   Source palette: rgb(2,10,25) ground, rgb(213,224,255) foreground,
-   rgba(213,224,255,.05) surface, radii 0 / 10px,
-   easing cubic-bezier(.4,0,.2,1) and cubic-bezier(0,0,.2,1).
-   Brass is an addition: the reference is a real-estate WebGL site, and a
-   charitable civic society needs archive warmth rather than a cold tech blue.
+   Design tokens — daylight civic editorial.
+   Warm paper, deep botanical ink, persimmon accents and mineral color fields
+   keep the institutional register while replacing the former near-black UI.
    ========================================================================== */
 :root {
-  --ink: 2 10 25;
-  --ink-deep: 1 6 16;
-  --ink-raised: 5 15 34;
-  --vellum: 213 224 255;
-  --brass: 200 162 76;
+  --ink: 247 244 235;
+  --ink-deep: 239 235 222;
+  --ink-raised: 255 253 247;
+  --vellum: 25 46 41;
+  --brass: 221 76 45;
 
-  --surface: rgb(var(--vellum) / 0.045);
-  --surface-hover: rgb(var(--vellum) / 0.075);
-  --hairline: rgb(var(--vellum) / 0.14);
-  --hairline-soft: rgb(var(--vellum) / 0.08);
+  --surface: rgb(255 253 247 / 0.7);
+  --surface-hover: rgb(255 255 255 / 0.92);
+  --hairline: rgb(var(--vellum) / 0.18);
+  --hairline-soft: rgb(var(--vellum) / 0.1);
 
   --text: rgb(var(--vellum));
-  --text-dim: rgb(var(--vellum) / 0.62);
-  --text-faint: rgb(var(--vellum) / 0.4);
+  --text-dim: rgb(var(--vellum) / 0.72);
+  --text-faint: rgb(var(--vellum) / 0.5);
 
-  --radius: 10px;
-  --radius-sm: 6px;
+  --radius: 22px;
+  --radius-sm: 12px;
 
   /* Motion primitives, straight from the capture. */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,9 +70,9 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 8% -10%, rgb(var(--brass) / 0.09), transparent 55%),
-    radial-gradient(100% 70% at 85% 115%, rgb(var(--vellum) / 0.09), transparent 60%),
-    linear-gradient(rgb(var(--ink-deep)), rgb(var(--ink)) 45%);
+    radial-gradient(90% 60% at 4% -10%, rgb(247 174 82 / 0.22), transparent 58%),
+    radial-gradient(80% 65% at 95% 105%, rgb(34 101 219 / 0.13), transparent 58%),
+    linear-gradient(145deg, rgb(var(--ink-raised)), rgb(var(--ink)) 50%, rgb(var(--ink-deep)));
 }
 
 /* Paper grain. Generated inline as an SVG turbulence — no image request. */
@@ -85,8 +82,8 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.22;
-  mix-blend-mode: overlay;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
 }
 
@@ -265,4 +262,116 @@ body::after {
   [data-material="surface"] {
     background-color: rgb(var(--ink-raised));
   }
+}
+
+/* ========================================================================== 
+   2026 daylight restyle — tactile civic modernism
+   ========================================================================== */
+main, footer, header { position: relative; z-index: 1; }
+
+.route-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.route-atmosphere span {
+  position: absolute;
+  width: min(42vw, 34rem);
+  aspect-ratio: 1;
+  border-radius: 52% 48% 63% 37% / 38% 57% 43% 62%;
+  filter: blur(1px);
+  opacity: .13;
+  will-change: transform;
+}
+.route-atmosphere span:nth-child(1) { background: #f07145; top: 20%; left: -20rem; animation: ambient-a 22s ease-in-out infinite alternate; }
+.route-atmosphere span:nth-child(2) { background: #2c65d8; top: 60%; right: -22rem; animation: ambient-b 28s ease-in-out infinite alternate; }
+.route-atmosphere span:nth-child(3) { background: #49a98c; bottom: -22rem; left: 38%; animation: ambient-c 25s ease-in-out infinite alternate; }
+@keyframes ambient-a { to { transform: translate3d(9rem, -4rem, 0) rotate(24deg); } }
+@keyframes ambient-b { to { transform: translate3d(-10rem, 5rem, 0) rotate(-35deg); } }
+@keyframes ambient-c { to { transform: translate3d(4rem, -8rem, 0) rotate(45deg); } }
+
+/* The WebGL field is deliberately an object in the composition, not a generic
+   full-bleed backdrop. Its clipped, asymmetric silhouette makes the hero feel
+   like an active exhibit. */
+.home-hero { isolation: isolate; }
+.home-hero > *:not(.hero-canvas-wrap) { position: relative; z-index: 2; }
+.hero-canvas-wrap {
+  position: absolute;
+  z-index: 0;
+  top: 6.5rem;
+  right: clamp(-9rem, -5vw, -2rem);
+  width: min(61vw, 58rem);
+  height: calc(100% - 9.5rem);
+  min-height: 32rem;
+  overflow: hidden;
+  border: 1px solid rgb(var(--vellum) / .16);
+  border-radius: 48% 52% 41% 59% / 58% 38% 62% 42%;
+  box-shadow: 0 34px 90px rgb(34 66 55 / .13), inset 0 0 0 1px rgb(255 255 255 / .45);
+  animation: hero-morph 14s ease-in-out infinite alternate;
+}
+.hero-canvas-wrap::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgb(var(--ink)) 0%, transparent 33%); }
+.hero-webgl { width: 100%; height: 100%; display: block; }
+.hero-canvas-label {
+  position: absolute; right: 12%; bottom: 9%; z-index: 2;
+  border-radius: 999px; padding: .55rem .8rem;
+  background: rgb(255 253 247 / .72); backdrop-filter: blur(12px);
+  color: rgb(var(--vellum) / .7); font: 500 .62rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+}
+@keyframes hero-morph { to { border-radius: 58% 42% 55% 45% / 42% 54% 46% 58%; transform: translate3d(-1rem, .8rem, 0) rotate(1.5deg); } }
+
+.home-hero h1 { position: relative; z-index: 3; max-width: 12ch; text-shadow: 0 1px 0 rgb(255 255 255 / .6); }
+.home-hero h1 > span:last-child { padding-right: clamp(0rem, 5vw, 4rem); }
+.home-hero .rule { background: rgb(var(--vellum) / .32); }
+
+/* Softer material and stronger lift replace the former dark grid aesthetic. */
+[data-material="surface"] {
+  box-shadow: 0 18px 60px rgb(32 55 47 / .08), inset 0 1px 0 rgb(255 255 255 / .85);
+}
+section[id] { position: relative; }
+.border-hair { border-color: rgb(var(--vellum) / .14); }
+.bg-ink { background-color: rgb(var(--ink-raised) / .76); }
+.hover\:bg-ink-raised:hover { background-color: rgb(255 255 255 / .95); }
+
+/* Each interior page opens with its own kinetic mark. The motif inherits the
+   route through a body data attribute so page content stays clean. */
+.page-hero { overflow: hidden; min-height: 31rem; display: flex; align-items: flex-end; background: rgb(255 253 247 / .28); }
+.page-hero > .mx-auto { position: relative; z-index: 2; }
+.page-hero-motif { position:absolute; z-index:0; inset:5rem var(--gutter) 1.5rem auto; width:min(39vw,28rem); pointer-events:none; }
+.page-hero-motif span { position:absolute; display:block; inset:14%; border:1px solid rgb(var(--vellum) / .18); border-radius:50%; }
+.page-hero-motif span:nth-child(2) { inset:28%; border-color: rgb(var(--brass) / .5); }
+.page-hero-motif span:nth-child(3) { inset:42%; background:rgb(44 101 216 / .15); border:0; }
+
+body[data-route="about"] .page-hero-motif { animation: motif-float 8s ease-in-out infinite alternate; }
+body[data-route="about"] .page-hero-motif span { border-radius: 45% 55% 38% 62%; animation: motif-spin 18s linear infinite; }
+body[data-route="forum"] .page-hero-motif span { animation: motif-pulse 3.4s ease-out infinite; }
+body[data-route="forum"] .page-hero-motif span:nth-child(2) { animation-delay: -1.1s; }
+body[data-route="forum"] .page-hero-motif span:nth-child(3) { animation-delay: -2.2s; }
+body[data-route="intake"] .page-hero-motif { background-image:linear-gradient(rgb(var(--vellum)/.12) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--vellum)/.12) 1px,transparent 1px);background-size:2rem 2rem;animation:motif-grid 6s linear infinite;clip-path:polygon(13% 0,100% 18%,83% 100%,0 75%); }
+body[data-route="join"] .page-hero-motif span { transform-origin: 50% 100%; animation: motif-bloom 5.5s ease-in-out infinite alternate; border-radius: 50% 50% 8% 50%; }
+body[data-route="contact"] .page-hero-motif span { animation: motif-signal 4s ease-out infinite; }
+body[data-route="record"] .page-hero-motif { border:1px solid rgb(var(--vellum)/.18); border-radius:1.5rem; background:repeating-linear-gradient(0deg,transparent 0 2rem,rgb(var(--vellum)/.08) 2rem calc(2rem + 1px)); overflow:hidden; }
+body[data-route="record"] .page-hero-motif::after { content:"";position:absolute;inset:0 0 auto;height:18%;background:linear-gradient(transparent,rgb(44 101 216/.2));animation:motif-scan 4s ease-in-out infinite; }
+body[data-route="privacy"] .page-hero-motif span { border-radius: 0; border-width:0 0 1px; animation: motif-lines 5s ease-in-out infinite alternate; }
+
+@keyframes motif-float { to { transform:translate3d(0,-1rem,0) rotate(7deg); } }
+@keyframes motif-spin { to { transform:rotate(360deg); } }
+@keyframes motif-pulse { 0% { transform:scale(.35);opacity:.8 } 100% { transform:scale(1.4);opacity:0 } }
+@keyframes motif-grid { to { background-position:2rem 2rem; } }
+@keyframes motif-bloom { to { transform:rotate(45deg) scale(1.08); } }
+@keyframes motif-signal { 0% { transform:scale(.3);opacity:.8 } 100% { transform:scale(1.5);opacity:0 } }
+@keyframes motif-scan { 50% { transform:translateY(450%); } }
+@keyframes motif-lines { to { transform:translateY(3rem) skewY(-5deg); } }
+
+@media (max-width: 767px) {
+  .hero-canvas-wrap { width: 96vw; height: 58%; min-height: 0; top: 7rem; right: -40%; opacity: .78; }
+  .hero-canvas-wrap::after { background:linear-gradient(90deg,rgb(var(--ink)) 0%,transparent 65%); }
+  .hero-canvas-label { display:none; }
+  .page-hero-motif { right:-7rem; width:21rem; opacity:.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-atmosphere span, .hero-canvas-wrap, .page-hero-motif, .page-hero-motif span, .page-hero-motif::after { animation:none!important; }
 }

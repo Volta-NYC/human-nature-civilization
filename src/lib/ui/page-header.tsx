@@ -14,7 +14,8 @@ export default function PageHeader({
   aside?: ReactNode;
 }) {
   return (
-    <header className="border-b border-hair pb-16 pt-[9.5rem] sm:pt-[11rem]">
+    <header className="page-hero border-b border-hair pb-16 pt-[9.5rem] sm:pt-[11rem]">
+      <div className="page-hero-motif" aria-hidden="true"><span /><span /><span /></div>
       <Container>
         <div className="flex items-center gap-4" data-reveal>
           <Label brass>{label}</Label>

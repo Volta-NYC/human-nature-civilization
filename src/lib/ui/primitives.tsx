@@ -102,10 +102,10 @@ export function SectionHead({
 type ButtonVariant = "solid" | "outline" | "ghost";
 
 const buttonBase =
-  "group inline-flex items-center justify-center gap-2.5 rounded-token px-6 py-3.5 font-display text-[0.9375rem] font-semibold tracking-[-0.01em] transition-[background-color,border-color,color,transform] duration-fast ease-token active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
+  "group inline-flex items-center justify-center gap-2.5 rounded-token px-6 py-3.5 font-display text-[0.9375rem] font-semibold tracking-[-0.01em] shadow-[0_8px_30px_rgba(25,46,41,0.08)] transition-[background-color,border-color,color,transform,box-shadow] duration-token ease-token hover:-translate-y-0.5 active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  solid: "bg-vellum text-ink hover:bg-white",
+  solid: "bg-vellum text-ink hover:bg-brass hover:text-white",
   outline: "border border-hair text-primary hover:border-vellum/40 hover:bg-surface",
   ghost: "text-dim hover:text-primary",
 };

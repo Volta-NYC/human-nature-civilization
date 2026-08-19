@@ -4,6 +4,7 @@ import "./globals.css";
 import SiteHeader from "@/lib/ui/site-header";
 import SiteFooter from "@/lib/ui/site-footer";
 import RevealEngine from "@/lib/motion/reveal-engine";
+import RouteAtmosphere from "@/lib/motion/route-atmosphere";
 import { site } from "@/content/site";
 import { org } from "@/content/org";
 
@@ -76,8 +77,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#020a19",
-  colorScheme: "dark",
+  themeColor: "#f4f0e6",
+  colorScheme: "light",
 };
 
 /**
@@ -112,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <RouteAtmosphere />
         <script
           type="application/ld+json"
           // Emitted from a typed literal, not user input.

@@ -1,4 +1,5 @@
 import ScrollTension from "@/lib/motion/scroll-tension";
+import HeroWebGL from "@/lib/motion/hero-webgl";
 import { org, monthsSinceFormation } from "@/content/org";
 import { ActionLink, Arrow, Container, Label } from "./primitives";
 
@@ -15,7 +16,11 @@ export default function Hero() {
   const months = monthsSinceFormation();
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-28">
+    <section className="home-hero relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-28">
+      <div className="hero-canvas-wrap">
+        <HeroWebGL />
+        <span className="hero-canvas-label">A living field · move to disturb</span>
+      </div>
       <ScrollTension>
         <Container className="flex flex-1 flex-col justify-center py-8">
           <div
