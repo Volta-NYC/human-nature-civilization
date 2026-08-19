@@ -1,12 +1,14 @@
 {
-  "name": "volta-base-template",
+  "name": "human-nature-civilization",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "content:report": "node scripts/content-report.mjs",
+    "check": "npm run typecheck && npm run build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "latest",
@@ -14,10 +16,12 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@types/node": "^26.2.0",
     "@types/react": "^19.2.14",
     "autoprefixer": "^10.0.0",
     "postcss": "^8.0.0",
     "tailwindcss": "^3.0.0",
     "typescript": "^5.0.0"
-  }
+  },
+  "description": "Website for Human Nature & Civilization Forum Society Inc., Queens, New York."
 }

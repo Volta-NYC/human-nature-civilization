@@ -2,11 +2,267 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  padding: 0;
-  margin: 0;
+/* ==========================================================================
+   Design tokens — adapted from the `hubtown` Volta capture.
+   Source palette: rgb(2,10,25) ground, rgb(213,224,255) foreground,
+   rgba(213,224,255,.05) surface, radii 0 / 10px,
+   easing cubic-bezier(.4,0,.2,1) and cubic-bezier(0,0,.2,1).
+   Brass is an addition: the reference is a real-estate WebGL site, and a
+   charitable civic society needs archive warmth rather than a cold tech blue.
+   ========================================================================== */
+:root {
+  --ink: 2 10 25;
+  --ink-deep: 1 6 16;
+  --ink-raised: 5 15 34;
+  --vellum: 213 224 255;
+  --brass: 200 162 76;
+
+  --surface: rgb(var(--vellum) / 0.045);
+  --surface-hover: rgb(var(--vellum) / 0.075);
+  --hairline: rgb(var(--vellum) / 0.14);
+  --hairline-soft: rgb(var(--vellum) / 0.08);
+
+  --text: rgb(var(--vellum));
+  --text-dim: rgb(var(--vellum) / 0.62);
+  --text-faint: rgb(var(--vellum) / 0.4);
+
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  /* Motion primitives, straight from the capture. */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur: 320ms;
+  --dur-slow: 640ms;
+  --dur-reveal: 720ms;
+
+  /* Fluid rhythm. The capture's spacing walks in 3px steps; this keeps that
+     cadence while scaling with the viewport. */
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --section: clamp(5rem, 12vh, 9.5rem);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: rgb(var(--ink));
+  color: var(--text);
+  font-family: var(--font-body), Georgia, "Times New Roman", serif;
+  font-size: 100%;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* A faint fixed field behind everything: a cold horizon low on the page and a
+   brass ember at the top-left, so long dark scrolls never read as flat black. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 8% -10%, rgb(var(--brass) / 0.09), transparent 55%),
+    radial-gradient(100% 70% at 85% 115%, rgb(var(--vellum) / 0.09), transparent 60%),
+    linear-gradient(rgb(var(--ink-deep)), rgb(var(--ink)) 45%);
+}
+
+/* Paper grain. Generated inline as an SVG turbulence — no image request. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgb(var(--brass) / 0.3);
+  color: rgb(var(--vellum));
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--brass));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Typography. Tracking is size-specific: display sizes take negative tracking,
+   micro-labels take positive. Never one value for everything.
+   -------------------------------------------------------------------------- */
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  /* The record label: mono, small, wide. The site's connective tissue. */
+  .label {
+    font-family: var(--font-mono), ui-monospace, "SF Mono", monospace;
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+
+  .label-brass {
+    color: rgb(var(--brass) / 0.85);
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--hairline);
+    border: 0;
+  }
+
+  /* Long-form reading column. */
+  .prose-society p {
+    font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem);
+    line-height: 1.72;
+    color: var(--text-dim);
+    margin: 0 0 1.4em;
+    max-width: 62ch;
+  }
+
+  .prose-society p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose-society strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reveal system. Elements start displaced and settle when they enter the
+   viewport, staggered by --i. Under reduced motion the displacement is
+   dropped entirely and only a short cross-fade remains.
+   -------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease);
+  transition-delay: calc(var(--i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* A hairline that draws itself in, echoing the capture's `draw` keyframe. */
+[data-reveal-rule] {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-reveal) var(--ease);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+[data-reveal-rule="shown"] {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 200ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    transform: none !important;
+    transition: opacity 200ms linear !important;
+    transition-delay: 0ms !important;
+  }
+
+  [data-reveal-rule] {
+    transform: none !important;
+  }
+}
+
+/* Translucency is a preference, not a requirement. When it is turned down the
+   floating chrome becomes a solid surface with a real edge, rather than a
+   frosted pane that depends on what happens to be scrolling underneath it. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-material] {
+    backdrop-filter: none !important;
+  }
+
+  /* Floating chrome becomes opaque and grows the edge it was borrowing from
+     the blur. */
+  [data-material="chrome"] {
+    background-color: rgb(var(--ink)) !important;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* A panel is a raised surface, not chrome: keep it distinct from the ground
+     rather than flattening it into the page. */
+  [data-material="surface"] {
+    background-color: rgb(var(--ink-raised)) !important;
+  }
+
+  [data-material-edge]::after {
+    display: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --text-dim: rgb(var(--vellum) / 0.85);
+    --text-faint: rgb(var(--vellum) / 0.7);
+    --hairline: rgb(var(--vellum) / 0.35);
+    --surface: rgb(var(--vellum) / 0.09);
+  }
+
+  [data-material] {
+    background-color: rgb(var(--ink) / 0.96);
+    border-color: rgb(var(--vellum) / 0.45);
+  }
+
+  [data-material="surface"] {
+    background-color: rgb(var(--ink-raised));
+  }
 }
