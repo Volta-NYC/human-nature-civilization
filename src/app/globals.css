@@ -293,26 +293,30 @@ main, footer, header { position: relative; z-index: 1; }
 @keyframes ambient-b { to { transform: translate3d(-10rem, 5rem, 0) rotate(-35deg); } }
 @keyframes ambient-c { to { transform: translate3d(4rem, -8rem, 0) rotate(45deg); } }
 
-/* The WebGL field is deliberately an object in the composition, not a generic
-   full-bleed backdrop. Its clipped, asymmetric silhouette makes the hero feel
-   like an active exhibit. */
+/* Full-bleed interactive WebGL field for the home hero. */
 .home-hero { isolation: isolate; }
 .home-hero > *:not(.hero-canvas-wrap) { position: relative; z-index: 2; }
 .hero-canvas-wrap {
   position: absolute;
   z-index: 0;
-  top: 6.5rem;
-  right: clamp(-9rem, -5vw, -2rem);
-  width: min(61vw, 58rem);
-  height: calc(100% - 9.5rem);
-  min-height: 32rem;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
-  border: 1px solid rgb(var(--vellum) / .16);
-  border-radius: 48% 52% 41% 59% / 58% 38% 62% 42%;
-  box-shadow: 0 34px 90px rgb(34 66 55 / .13), inset 0 0 0 1px rgb(255 255 255 / .45);
-  animation: hero-morph 14s ease-in-out infinite alternate;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
-.hero-canvas-wrap::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgb(var(--ink)) 0%, transparent 33%); }
+.hero-canvas-wrap::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgb(var(--ink) / .9) 0%, rgb(var(--ink) / .58) 30%, transparent 64%),
+    linear-gradient(0deg, rgb(var(--ink) / .62) 0%, transparent 28%),
+    linear-gradient(180deg, rgb(var(--ink) / .38) 0%, transparent 22%);
+}
 .hero-webgl { width: 100%; height: 100%; display: block; }
 .hero-canvas-label {
   position: absolute; right: 12%; bottom: 9%; z-index: 2;
@@ -320,7 +324,6 @@ main, footer, header { position: relative; z-index: 1; }
   background: rgb(255 253 247 / .72); backdrop-filter: blur(12px);
   color: rgb(var(--vellum) / .7); font: 500 .62rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
 }
-@keyframes hero-morph { to { border-radius: 58% 42% 55% 45% / 42% 54% 46% 58%; transform: translate3d(-1rem, .8rem, 0) rotate(1.5deg); } }
 
 .home-hero h1 { position: relative; z-index: 3; max-width: 12ch; text-shadow: 0 1px 0 rgb(255 255 255 / .6); }
 .home-hero h1 > span:last-child { padding-right: clamp(0rem, 5vw, 4rem); }
@@ -366,8 +369,13 @@ body[data-route="privacy"] .page-hero-motif span { border-radius: 0; border-widt
 @keyframes motif-lines { to { transform:translateY(3rem) skewY(-5deg); } }
 
 @media (max-width: 767px) {
-  .hero-canvas-wrap { width: 96vw; height: 58%; min-height: 0; top: 7rem; right: -40%; opacity: .78; }
-  .hero-canvas-wrap::after { background:linear-gradient(90deg,rgb(var(--ink)) 0%,transparent 65%); }
+  .hero-canvas-wrap { inset: 0; width: 100%; height: 100%; opacity: 1; }
+  .hero-canvas-wrap::after {
+    background:
+      linear-gradient(90deg, rgb(var(--ink) / .88) 0%, rgb(var(--ink) / .5) 65%, transparent 100%),
+      linear-gradient(0deg, rgb(var(--ink) / .72) 0%, transparent 38%),
+      linear-gradient(180deg, rgb(var(--ink) / .42) 0%, transparent 24%);
+  }
   .hero-canvas-label { display:none; }
   .page-hero-motif { right:-7rem; width:21rem; opacity:.7; }
 }
