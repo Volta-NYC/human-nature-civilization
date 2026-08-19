@@ -51,9 +51,19 @@ export default function SiteFooter() {
         <p className="m-0">
           © {year} {org.legalName.value}. A New York not-for-profit corporation.
         </p>
-        <p className="m-0">
-          DOS ID {org.dosId.value} · Formed {org.formedOnLabel.value} · {org.county.value} County
-        </p>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:justify-end">
+          <p className="m-0">
+            DOS ID {org.dosId.value} · Formed {org.formedOnLabel.value} · {org.county.value} County
+          </p>
+          <a
+            href="https://novusnyc.org"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="font-display text-[0.75rem] font-semibold tracking-[-0.01em] text-[#F6B78D] transition-opacity duration-fast ease-token hover:opacity-70"
+          >
+            Made by Novus
+          </a>
+        </div>
       </Container>
     </footer>
   );
